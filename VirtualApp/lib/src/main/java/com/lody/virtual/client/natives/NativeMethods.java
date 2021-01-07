@@ -8,10 +8,14 @@ import java.lang.reflect.Method;
 
 import dalvik.system.DexFile;
 
+import android.util.Log;
+
 /**
  * @author Lody
  */
 public class NativeMethods {
+
+    private static final String TAG = NativeMethods.class.getSimpleName();
 
     public static int gCameraMethodType;
     public static Method gCameraNativeSetup;
@@ -72,6 +76,7 @@ public class NativeMethods {
         }
 
         for (Method mth : AudioRecord.class.getDeclaredMethods()) {
+            Log.i(TAG, mth.getName());
             if (mth.getName().equals("native_check_permission")
                     && mth.getParameterTypes().length == 1
                     && mth.getParameterTypes()[0] == String.class) {

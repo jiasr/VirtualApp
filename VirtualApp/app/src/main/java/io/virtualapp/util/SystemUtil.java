@@ -5,18 +5,21 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
+import android.widget.Toast;
 
+import java.util.List;
 import java.util.Locale;
 
 import com.alibaba.fastjson.JSONObject;
 
 
 public class SystemUtil {
-
 
     public static String getIMEI(Context ctx) {
         TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Activity.TELEPHONY_SERVICE);
@@ -46,16 +49,9 @@ public class SystemUtil {
         js.put("device", Build.DEVICE);
         js.put("CPU_API", Build.CPU_ABI);
         js.put("CPU_ABI2", Build.CPU_ABI2);
-
         js.put("current_locale",Locale.getDefault().getLanguage());
         js.put("RELEASE",Build.VERSION.RELEASE);
-        try {
-            js.put("serial",getIMEI(ctx));
-        } catch (Exception e) {
-            js.put("serial",Build.UNKNOWN);
-        }
-
-        //js.put("locale_list",Locale.getAvailableLocales());
+        js.put("locale_list",Locale.getAvailableLocales());
 
         return js;
 

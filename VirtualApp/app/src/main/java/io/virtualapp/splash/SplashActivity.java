@@ -8,6 +8,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
@@ -27,12 +28,10 @@ import mirror.android.providers.Settings;
 
 public class SplashActivity extends VActivity {
 
-    private TextView phone_DeviceBrand;
-    private TextView phone_SystemModel;
-    private TextView phone_SystemLanguage;
-    private TextView phone_SystemVersion;
-    private TextView phone_IMEI;
+    private LinearLayout splash_list;
 
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         @SuppressWarnings("unused")
@@ -53,7 +52,7 @@ public class SplashActivity extends VActivity {
             long time = System.currentTimeMillis();
             doActionInThread();
             time = System.currentTimeMillis() - time;
-            long delta = 30000L - time;
+            long delta = 3000L - time;
             if (delta > 0) {
                 VUiKit.sleep(delta);
             }
@@ -64,21 +63,28 @@ public class SplashActivity extends VActivity {
     }
 
 
-    private void bindViews() {
+    private void bindViews(JSONObject js) {
+        splash_list = (LinearLayout) findViewById(R.id.splash_list);
+        String TAG = "系统参数：";
+        for (String value:js.keySet()){
+            Log.i(TAG, "Android系统版本号：" + value);
+            TextView child = new TextView(this);
+            child.setTextSize(20);
+            child.setTextColor(getResources().getColor(R.color.colorAccent));
+            child.setText(value+":"+js.get(value));
+            // 调用一个参数的addView方法
+            splash_list.addView(child);
+        }
 
-        phone_DeviceBrand = (TextView) findViewById(R.id.phone_DeviceBrand);
-        phone_SystemModel = (TextView) findViewById(R.id.phone_SystemModel);
-        phone_SystemLanguage = (TextView) findViewById(R.id.phone_SystemLanguage);
-        phone_SystemVersion = (TextView) findViewById(R.id.phone_SystemVersion);
-        phone_IMEI = (TextView) findViewById(R.id.phone_IMEI);
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void showSystemParameter() {
         String TAG = "系统参数：";
-        bindViews();
         JSONObject js = SystemUtil.getInfo(this);
         Log.i(TAG, "Android系统版本号：" + js);
+        bindViews(js);
     }
     private void doActionInThread() {
         if (!VirtualCore.get().isEngineLaunched()) {

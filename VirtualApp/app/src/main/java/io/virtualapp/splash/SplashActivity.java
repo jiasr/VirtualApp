@@ -52,7 +52,7 @@ public class SplashActivity extends VActivity {
             long time = System.currentTimeMillis();
             doActionInThread();
             time = System.currentTimeMillis() - time;
-            long delta = 3000L - time;
+            long delta = 10000L - time;
             if (delta > 0) {
                 VUiKit.sleep(delta);
             }

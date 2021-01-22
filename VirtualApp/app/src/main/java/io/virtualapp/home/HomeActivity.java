@@ -92,9 +92,10 @@ public class HomeActivity extends VActivity implements HomeContract.HomeView {
         setContentView(R.layout.activity_home);
         mUiHandler = new Handler(Looper.getMainLooper());
         bindViews();
+        showLoading();
         initLaunchpad();
         initMenu();
-        new HomePresenterImpl(this).start();
+        //new HomePresenterImpl(this).start();
     }
 
     private void initMenu() {
@@ -121,22 +122,7 @@ public class HomeActivity extends VActivity implements HomeContract.HomeView {
                     }).show();
             return false;
         });
-        menu.add("Virtual Storage").setIcon(R.drawable.ic_vs).setOnMenuItemClickListener(item -> {
-            Toast.makeText(this, "The coming", Toast.LENGTH_SHORT).show();
-            return false;
-        });
-        menu.add("Notification").setIcon(R.drawable.ic_notification).setOnMenuItemClickListener(item -> {
-            Toast.makeText(this, "The coming", Toast.LENGTH_SHORT).show();
-            return false;
-        });
-        menu.add("Virtual Location").setIcon(R.drawable.ic_notification).setOnMenuItemClickListener(item -> {
-            startActivity(new Intent(this, VirtualLocationSettings.class));
-            return true;
-        });
-        menu.add("Settings").setIcon(R.drawable.ic_settings).setOnMenuItemClickListener(item -> {
-            Toast.makeText(this, "The coming", Toast.LENGTH_SHORT).show();
-            return false;
-        });
+
         mMenuView.setOnClickListener(v -> mPopupMenu.show());
     }
 

@@ -17,6 +17,7 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.View;
@@ -95,7 +96,7 @@ public class HomeActivity extends VActivity implements HomeContract.HomeView {
         showLoading();
         initLaunchpad();
         initMenu();
-        //new HomePresenterImpl(this).start();
+        new HomePresenterImpl(this).start();
     }
 
     private void initMenu() {
@@ -320,6 +321,7 @@ public class HomeActivity extends VActivity implements HomeContract.HomeView {
             List<AppInfoLite> appList = data.getParcelableArrayListExtra(VCommends.EXTRA_APP_INFO_LIST);
             if (appList != null) {
                 for (AppInfoLite info : appList) {
+                    Log.i(TAG,"STARTING INSTALL APP"+info.packageName);
                     mPresenter.addApp(info);
                 }
             }

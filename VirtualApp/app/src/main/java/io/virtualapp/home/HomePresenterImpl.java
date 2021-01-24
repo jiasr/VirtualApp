@@ -2,6 +2,7 @@ package io.virtualapp.home;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.lody.virtual.GmsSupport;
 import com.lody.virtual.client.core.VirtualCore;
@@ -26,6 +27,8 @@ import jonathanfinerty.once.Once;
  * @author Lody
  */
 class HomePresenterImpl implements HomeContract.HomePresenter {
+
+    private static final String TAG = HomePresenterImpl.class.getSimpleName();
 
     private HomeContract.HomeView mView;
     private Activity mActivity;
@@ -59,6 +62,7 @@ class HomePresenterImpl implements HomeContract.HomePresenter {
             if (data instanceof PackageAppData) {
                 PackageAppData appData = (PackageAppData) data;
                 appData.isFirstOpen = false;
+                Log.i(TAG,"STARTING launch APP");
                 LoadingActivity.launch(mActivity, appData.packageName, 0);
             } else if (data instanceof MultiplePackageAppData) {
                 MultiplePackageAppData multipleData = (MultiplePackageAppData) data;
@@ -66,6 +70,7 @@ class HomePresenterImpl implements HomeContract.HomePresenter {
                 LoadingActivity.launch(mActivity, multipleData.appInfo.packageName, ((MultiplePackageAppData) data).userId);
             }
         } catch (Throwable e) {
+            Log.i(TAG,"STARTING launch APP"+e.getMessage());
             e.printStackTrace();
         }
     }

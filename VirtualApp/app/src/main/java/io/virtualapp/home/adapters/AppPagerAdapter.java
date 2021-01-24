@@ -8,6 +8,7 @@ import android.os.storage.StorageVolume;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import com.lody.virtual.helper.utils.Reflect;
 
@@ -29,6 +30,7 @@ public class AppPagerAdapter extends FragmentPagerAdapter {
     public AppPagerAdapter(FragmentManager fm) {
         super(fm);
         titles.add(VApp.getApp().getResources().getString(R.string.clone_apps));
+        String TAG = "系统参数：";
         dirs.add(null);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Context ctx = VApp.getApp();
@@ -36,8 +38,10 @@ public class AppPagerAdapter extends FragmentPagerAdapter {
             for (StorageVolume volume : storage.getStorageVolumes()) {
                 //Why the fuck are getPathFile and getUserLabel hidden?!
                 //StorageVolume is kinda useless without those...
+
                 File dir = Reflect.on(volume).call("getPathFile").get();
                 String label = Reflect.on(volume).call("getUserLabel").get();
+                Log.i(TAG, "dir：" + dir+"  labe"+ label);
                 if (dir.listFiles() != null) {
                     titles.add(label);
                     dirs.add(dir);

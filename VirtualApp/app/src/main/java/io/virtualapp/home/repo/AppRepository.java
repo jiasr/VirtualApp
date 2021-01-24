@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.util.Log;
 
 import com.lody.virtual.GmsSupport;
 import com.lody.virtual.client.core.InstallStrategy;
@@ -118,7 +119,10 @@ public class AppRepository implements AppDataSource {
         PackageManager pm = context.getPackageManager();
         List<AppInfo> list = new ArrayList<>(pkgList.size());
         String hostPkg = VirtualCore.get().getHostPkg();
+        String TAG = "系统参数：";
+        Log.i(TAG, "hostPkg：" + hostPkg);
         for (PackageInfo pkg : pkgList) {
+            Log.i(TAG, "PACKAGE：" + pkg);
             // ignore the host package
             if (hostPkg.equals(pkg.packageName)) {
                 continue;
@@ -128,16 +132,26 @@ public class AppRepository implements AppDataSource {
                 continue;
             }
             ApplicationInfo ai = pkg.applicationInfo;
+
             String path = ai.publicSourceDir != null ? ai.publicSourceDir : ai.sourceDir;
             if (path == null) {
+                Log.i(TAG, "no has path info：" + ai);
                 continue;
             }
+            //Log.i(TAG, "PACKAGE：" + ai);
             AppInfo info = new AppInfo();
             info.packageName = pkg.packageName;
             info.fastOpen = fastOpen;
             info.path = path;
             info.icon = ai.loadIcon(pm);
             info.name = ai.loadLabel(pm);
+            //Log.i(TAG, "PACKAGE -name：" + );
+            Log.i(TAG, "PACKAGE - path：" + info.path + info.name);
+            File f = new File(info.path);
+            Log.i(TAG,f.getAbsolutePath());
+
+
+
             InstalledAppInfo installedAppInfo = VirtualCore.get().getInstalledAppInfo(pkg.packageName, 0);
             if (installedAppInfo != null) {
                 info.cloneCount = installedAppInfo.getInstalledUsers().length;
